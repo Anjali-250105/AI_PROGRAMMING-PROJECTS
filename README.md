@@ -1,0 +1,258 @@
+# Sleep Wearable Intelligent Agent
+
+## Project Overview
+
+The **Sleep Wearable Intelligent Agent** is an academic project that analyses sleep-stage data and produces an explainable sleep-quality score.
+
+The system uses a real sleep hypnogram from the **Sleep-EDF dataset available through PhysioNet**. It extracts different sleep stages, calculates their durations and proportions, applies fuzzy membership functions, and generates a sleep score along with a non-clinical sleep-associated wellbeing proxy.
+
+The project is designed as an **explainable and age-adaptive intelligent agent**, where the sleep-duration evaluation changes according to the person's age group.
+
+---
+
+## Objectives
+
+The main objectives of this project are:
+
+- To obtain sleep-stage data from a real Sleep-EDF hypnogram.
+- To identify different sleep stages from EDF+ annotations.
+- To calculate the duration of Wake, Light, Deep and REM sleep.
+- To calculate the percentage of Light, Deep and REM sleep.
+- To use fuzzy reasoning to evaluate sleep quality.
+- To make the sleep-duration assessment age-adaptive.
+- To generate an explainable sleep score.
+- To incorporate self-reported stress into a sleep-associated wellbeing proxy.
+- To generate recommendations based on the calculated sleep score.
+- To save the final results in CSV format.
+
+---
+
+## Technologies Used
+
+- Python
+- Pandas
+- MNE
+- PyEDFlib
+- PhysioNet Sleep-EDF Dataset
+- Fuzzy Logic / Fuzzy Membership Functions
+- EDF/EDF+ sleep annotations
+
+---
+
+## Dataset
+
+This project uses the **Sleep-EDF Expanded** dataset available through PhysioNet.
+
+The program downloads the following default hypnogram:
+
+`SC4002EC-Hypnogram.edf`
+
+The data source used by the program is:
+
+**PhysioNet Sleep-EDF**
+
+---
+
+## Sleep Stages
+
+The program identifies the following sleep stages:
+
+- **W** – Wake
+- **N1** – Stage 1 sleep
+- **N2** – Stage 2 sleep
+- **N3** – Stage 3 sleep
+- **N4** – Stage 4 sleep
+- **REM** – Rapid Eye Movement sleep
+- **M** – Movement
+
+For calculating sleep proportions:
+
+- **Light Sleep = N1 + N2**
+- **Deep Sleep = N3 + N4**
+- **REM Sleep = REM**
+
+Total scored sleep is calculated as:
+
+`Light Sleep + Deep Sleep + REM Sleep`
+
+---
+
+## Methodology
+
+The intelligent agent follows these main steps:
+
+### 1. Install Required Libraries
+
+The notebook installs:
+
+- `mne`
+- `pyedflib`
+
+Pandas is used for data processing and result generation.
+
+### 2. Download the Hypnogram
+
+The program downloads the selected Sleep-EDF hypnogram from PhysioNet.
+
+### 3. Read Sleep Annotations
+
+MNE is used to read the EDF+ annotations.
+
+The program processes the annotation descriptions and maps them to standard sleep-stage labels.
+
+### 4. Calculate Sleep Durations
+
+The duration of each sleep stage is calculated in minutes.
+
+The following metrics are obtained:
+
+- Wake duration
+- Light sleep duration
+- Deep sleep duration
+- REM sleep duration
+- Total sleep duration
+- Total sleep duration in hours
+
+### 5. Calculate Sleep Proportions
+
+The percentage of each major sleep category is calculated using total scored sleep.
+
+For example:
+
+`Light Sleep % = Light Sleep / Total Sleep × 100`
+
+Similarly, Deep Sleep % and REM Sleep % are calculated.
+
+---
+
+## Fuzzy Reasoning
+
+The project uses trapezoidal fuzzy membership functions to evaluate sleep-related parameters.
+
+A membership value between **0 and 100** is calculated for:
+
+- Sleep duration
+- REM sleep percentage
+- Deep sleep percentage
+- Light sleep percentage
+
+### Age-Adaptive Sleep Duration
+
+The preferred sleep-duration range changes according to age.
+
+The program uses three age groups:
+
+- **Below 18 years**
+- **18 to 64 years**
+- **65 years and above**
+
+This makes the sleep-duration component age-adaptive.
+
+---
+
+## Sleep Score
+
+The overall sleep score is calculated using weighted fuzzy scores.
+
+The weights used are:
+
+| Component | Weight |
+|---|---:|
+| Sleep Duration | 30% |
+| REM Sleep | 25% |
+| Deep Sleep | 25% |
+| Light Sleep | 20% |
+
+The final sleep score is calculated on a scale of **0 to 100**.
+
+The formula used is:
+
+`Sleep Score = 0.30 × Duration Score + 0.25 × REM Score + 0.25 × Deep Score + 0.20 × Light Score`
+
+---
+
+## Sleep Assessment Categories
+
+The sleep score is classified as follows:
+
+| Score | Category |
+|---|---|
+| 85 and above | Excellent |
+| 70–84.99 | Good / needs minor improvement |
+| 50–69.99 | Fair / needs improvement |
+| Below 50 | Poor / needs attention |
+
+---
+
+## Wellbeing Proxy
+
+The project also calculates a **sleep-associated wellbeing proxy** using:
+
+- Sleep score
+- Self-reported stress level
+
+The stress level is entered on a scale from **1 to 10**.
+
+The wellbeing proxy is calculated using:
+
+`Wellbeing Proxy = 0.75 × Sleep Score + 0.25 × Stress Score`
+
+A lower reported stress level contributes more positively to the proxy.
+
+### Important Note
+
+The wellbeing value generated by this project is an **academic proxy only**. It is not a medical diagnosis, mental-health assessment, or clinical measurement.
+
+---
+
+## Explainable Output
+
+The agent provides explanations based on the calculated sleep metrics.
+
+The explanation can include observations about:
+
+- Total sleep duration
+- REM sleep proportion
+- Deep sleep proportion
+- Reported stress level
+
+The program also generates a recommendation based on the calculated sleep score.
+
+This makes the system more explainable than simply producing a numerical score.
+
+---
+
+## Output
+
+The program saves the calculated results as a CSV file.
+
+The default output location is:
+
+`results/sleep_agent_result.csv`
+
+The output contains information such as:
+
+- Age
+- Stress level
+- Wake duration
+- Light sleep duration
+- Deep sleep duration
+- REM sleep duration
+- Total sleep duration
+- Total sleep in hours
+- Light sleep percentage
+- Deep sleep percentage
+- REM sleep percentage
+- Sleep score
+- Wellbeing score
+- Sleep category
+- Wellbeing category
+
+---
+
+## How to Run
+
+### Install the required packages
+
+```bash
+pip install mne pyedflib pandas
